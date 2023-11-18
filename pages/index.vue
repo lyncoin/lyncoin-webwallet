@@ -13,6 +13,7 @@
 					<li><a class="social-link" @click="exit">Exit</a></li>
 				</ul>
 			</div>
+			<span class="wallettitle">Lyncoin Web Wallet (v{{$nuxt.$config.clientVersion}})</span>
 		</nav>
 		<div class="wcontent">
 			<div class="page" id="page-setpassword">
@@ -260,8 +261,32 @@ export default {
     this.load();
     this.get_balance();
     this.load_transactions();
+    this.updater();
   },
   methods: {
+	updater() {
+		if (!webwallet.updater_is_loading) {
+			webwallet.updater_is_loading = true;
+			$nuxt.$axios({
+				method: 'GET',
+				url: webwallet.explorer_api_url + '/webwallet_version',
+				withCredentials: false,
+				crossDomain: true,
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8',
+				},
+			}).then(function (res) {
+				if(res.data.result !== $nuxt.$config.clientVersion) {
+					location.reload(true);
+				}
+			}).catch(function (error) {
+				alertifyjs.error(error + "");
+			}).finally(function () {
+				webwallet.updater_is_loading = false;
+			});
+		}
+		setTimeout(this.updater, 10000);
+	},
 	exit() {
 		$('.page').css('display', 'none');
 		$('.wfooter').css('display', 'none');
@@ -889,6 +914,7 @@ export default {
 		webwallet.sending = false;
 		webwallet.balance_is_loading = false;
 		webwallet.transactions_are_loading = false;
+		webwallet.updater_is_loading = false;
 
 		webwallet.show_privatekey = function() {
 			webwallet.keyindex = $(this).data('index');

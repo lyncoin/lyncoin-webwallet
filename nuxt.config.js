@@ -1,3 +1,4 @@
+import pkg from './package.json'
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -78,6 +79,10 @@ export default {
     'generate:page': page => {
       page.html = page.html.replace(/ data-n-head=".*?"/gi, '').replace(/ data-hid=".*?"/gi, '').replace(/ data-n-head-ssr/gi, '')
     },
+  },
+
+  publicRuntimeConfig: {
+    clientVersion: pkg.version,
   }
 
 }

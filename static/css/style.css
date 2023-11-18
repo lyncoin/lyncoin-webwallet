@@ -289,3 +289,10 @@ bottom: 0;
 .senttx {
 	background-color: #f8cfcf !important;
 }
+
+.wallettitle {
+	text-align: center;
+	width: 100%;
+	display: inline-block;
+	color: #fff;
+}
