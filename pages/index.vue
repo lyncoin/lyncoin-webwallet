@@ -198,9 +198,9 @@
 			<div class="page" id="page-send">
 				<p class="title is-3 is-spaced">Send</p>
 				<p class="subtitle is-5">Recipient</p>
-				<input class="input is-rounded" type="text" placeholder="lc1...">
+				<input id="page_send_address" class="input is-rounded" type="text" placeholder="lc1...">
 				<p class="subtitle is-5">Amount</p>
-				<input class="input is-rounded" type="text" placeholder="0.00">
+				<input id="page_send_amount" class="input is-rounded" type="text" placeholder="0.00">
 				<button class="button is-primary" style="margin-top: 10px;" @click="sendtx">Send</button>
 			</div>
 
@@ -581,8 +581,8 @@ export default {
 	},
 	sendtx() {
 
-		webwallet.to_addr = $($('#page-send input')[0]).val();
-		webwallet.amount = $($('#page-send input')[1]).val();
+		webwallet.to_addr = $('#page_send_address').val();
+		webwallet.amount = $('#page_send_amount').val();
 		var parts = webwallet.amount.split(".");
 
 		var invalid_amount = false;
