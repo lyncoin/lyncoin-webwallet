@@ -414,11 +414,14 @@ export default {
 		var pas = $('#ask-password-send-form input[type="password"]').val();
 		$('#ask-password-send-form input[type="password"]').val('');
 		var key = localStorage.getItem('key');
+		var invalid_password = false;
 		try {
 			var decrypted = webwallet.decrypt(pas, key);
 		} catch (error) {
 			alertifyjs.error('Invalid password');
-		} finally {
+			invalid_password = true;
+		}
+		if(!invalid_password) {
 			webwallet.tmp = pas;
 			if (!webwallet.sending) {
 				webwallet.sending = true;
@@ -518,11 +521,14 @@ export default {
 		var pas = $('#ask-password-create-address-form input[type="password"]').val();
 		$('#ask-password-create-address-form input[type="password"]').val('');
 		var key = localStorage.getItem('key');
+		var invalid_password = false;
 		try {
 			var decrypted = webwallet.decrypt(pas, key);
 		} catch (error) {
 			alertifyjs.error('Invalid password');
-		} finally {
+			invalid_password = true;
+		}
+		if(!invalid_password) {
 			var address_count = localStorage.getItem('address_count');
 			if(address_count === null) {
 				address_count = 0;
