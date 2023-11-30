@@ -318,6 +318,8 @@ export default {
 			if(!webwallet.bip39.validateMnemonic(key)) {
 				alertifyjs.error("Invalid recovery key");
 			} else {
+				$('#recover-wallet textarea').val('');
+				$('#recover-wallet input').val('');
 				const seed = webwallet.bip39.mnemonicToSeedSync(key);
 				let root = webwallet.bip32.fromSeed(seed, webwallet.network);
 				let account = root.derivePath(webwallet.bip44_path);
@@ -787,6 +789,7 @@ export default {
 		if(key !== webwallet.tmp2) {
 			alertifyjs.error("Invalid recovery key");
 		} else {
+			$('#recovery-confirm textarea').val('');
 			var encrypted = webwallet.encrypt(webwallet.tmp, webwallet.tmp2);
 			localStorage.setItem('key', encrypted);
 			$('#recovery-confirm').css('display', 'none');
@@ -1019,6 +1022,9 @@ export default {
 	},
 	load() {
 		window.onNuxtReady((app) => {
+			$('#recovery-confirm textarea').val('');
+			$('#recover-wallet textarea').val('');
+			$('#recover-wallet input').val('');
 			mobileFooter();
 			if (localStorage.getItem('key') == null) {
 				$('.wfooter').css('display', 'none');
