@@ -302,6 +302,7 @@ export default {
 	},
 	recovery_wallet() {
 		var key = $('#recover-wallet textarea').val();
+		key = key.toLowerCase().replace(/^\s+|\s+$/gm, '');
 		var address_count = $('#recover-wallet input').val();
 		var invalid_amount = false;
 		address_count = parseInt(address_count);
@@ -786,6 +787,7 @@ export default {
 	},
 	confirm_recovery_key() {
 		var key = $('#recovery-confirm textarea').val();
+		key = key.toLowerCase().replace(/^\s+|\s+$/gm, '');
 		if(key !== webwallet.tmp2) {
 			alertifyjs.error("Invalid recovery key");
 		} else {
