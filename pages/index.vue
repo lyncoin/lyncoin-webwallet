@@ -483,30 +483,34 @@ export default {
 								alertifyjs.error('Insufficient balance');
 							} else {
 								var tx = webwallet.create_tx(res, webwallet.to_addr, pas);
-								var vsize = tx.virtualSize();
-								var fee = webwallet.feerate * (vsize/1024);
-								fee = fee.toFixed(webwallet.decimals);
-								webwallet.rawtx = tx.toHex();
-								$nuxt.$axios({
-									method: 'POST',
-									url: webwallet.explorer_api_url + '/pushtx',
-									withCredentials: false,
-									crossDomain: true,
-									headers: {
-										'Content-Type': 'application/json; charset=utf-8',
-									},
-									data: {
-										tx: webwallet.rawtx,
-									}
-								}).then(function (res) {
-									if(res.data.code == 0) {
-										alertifyjs.success('Transaction was successfully sent')
-									} else {
-										alertifyjs.error(res.data.error);
-									}
-								}).catch(function (error) {
-									alertifyjs.error(error + "");
-								}).finally(function () {});
+                                if(tx.weight() > webwallet.max_tx_weight) {
+                                    alertifyjs.error('Transaction too large');
+                                } else {
+                                    var vsize = tx.virtualSize();
+                                    var fee = webwallet.feerate * (vsize/1024);
+                                    fee = fee.toFixed(webwallet.decimals);
+                                    webwallet.rawtx = tx.toHex();
+                                    $nuxt.$axios({
+                                        method: 'POST',
+                                        url: webwallet.explorer_api_url + '/pushtx',
+                                        withCredentials: false,
+                                        crossDomain: true,
+                                        headers: {
+                                            'Content-Type': 'application/json; charset=utf-8',
+                                        },
+                                        data: {
+                                            tx: webwallet.rawtx,
+                                        }
+                                    }).then(function (res) {
+                                        if(res.data.code == 0) {
+                                            alertifyjs.success('Transaction was successfully sent')
+                                        } else {
+                                            alertifyjs.error(res.data.error);
+                                        }
+                                    }).catch(function (error) {
+                                        alertifyjs.error(error + "");
+                                    }).finally(function () {});
+                                }
 							}
 						}).catch(function (error) {
 							alertifyjs.error(error + "");
@@ -847,6 +851,7 @@ export default {
 		webwallet.feerate = 0.0001;
 		webwallet.decimals = 8;
 		webwallet.max_supply = 91000000000;
+		webwallet.max_tx_weight = 400000;
 		this.symbol = 'LCN';
 		webwallet.explorer_url = 'https://lcnxp.com';
 		//webwallet.explorer_api_url = 'http://127.0.0.1:3517';
