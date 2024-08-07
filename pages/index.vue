@@ -851,7 +851,7 @@ export default {
 		webwallet.feerate = 0.0001;
 		webwallet.decimals = 8;
 		webwallet.max_supply = 91000000000;
-		webwallet.max_tx_weight = 400000;
+		webwallet.max_tx_weight = 50000;
 		this.symbol = 'LCN';
 		webwallet.explorer_url = 'https://lcnxp.com';
 		//webwallet.explorer_api_url = 'http://127.0.0.1:3517';
